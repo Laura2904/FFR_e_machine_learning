@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.model_selection import KFold
+from sklearn.model_selection import KFold, StratifiedKFold
 from .assessment import assessment_metrics as am
 
 def sigmoid(z):
@@ -79,7 +79,7 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
 
     #Z-score
     mean = np.mean(training_feature, axis=0)
-    std = np.std(training_feature, axis=0, ddof=0)
+    std = np.std(training_feature, axis=0, ddof=1)
     std[std == 0] = 1  # avoid division by zero
 
     training_feature = (training_feature - mean) / std
@@ -97,7 +97,7 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
     mean_accuracy = np.zeros(l)
     mean_loss = np.zeros(l)
 
-    cv = KFold(n_splits=k_fold, shuffle=True, random_state=42)
+    cv = StratifiedKFold(n_splits=k_fold,shuffle=True,random_state=42)
 
     # Cross-Validation to find the best lambda
     for h, lam in enumerate(lambdas):
