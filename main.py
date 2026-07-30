@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from processing.classification import binomial_logistic_regression as BLR
+from processing.classification_LR import binomial_logistic_regression as BLR
 
 # Data loading
 df = pd.read_excel(
@@ -49,9 +49,6 @@ print(f"Specificity Test (threshold 0.5): {Specificity_LR[1][50]:.3f}")
 #find the best threshold
 Sensibility_train = Sensibility_LR[0]
 Specificity_train = Specificity_LR[0]
-
-print(Sensibility_train)
-print(Specificity_train)
 
 youden_index =  (Sensibility_train + Specificity_train)-1
 alpha = np.linspace(1, 0, 101)
