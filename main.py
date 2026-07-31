@@ -25,12 +25,8 @@ X = np.column_stack((stimulation, data))
 y = binary_class
 
 # Train/Test Splitting
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, 
-    test_size=0.25, 
-    random_state=20, 
-    stratify=y
-)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, 
+                                                    random_state=20, stratify=y)
 
 # union features and class
 training_set = np.column_stack((X_train, y_train))
