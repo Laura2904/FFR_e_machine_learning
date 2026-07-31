@@ -104,7 +104,7 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
         loss_beta = np.zeros(k_fold)
         accuracy_beta = np.zeros(k_fold)
 
-        for i, (idxTrain, idxTest) in enumerate(cv.split(xtrain)):
+        for i, (idxTrain, idxTest) in enumerate(cv.split(xtrain, training_class)):
             xtrain_fold, ytrain_fold = xtrain[idxTrain], training_class[idxTrain]
             xtest_fold, ytest_fold = xtrain[idxTest], training_class[idxTest]
 

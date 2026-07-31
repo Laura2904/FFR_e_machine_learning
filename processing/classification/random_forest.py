@@ -1,8 +1,8 @@
 import numpy as np
 from sklearn.model_selection import KFold, StratifiedKFold
 from typing import List, Tuple, Optional
-from assessment import assessment_metrics
-from classification.decision_tree import DecisionTree
+from processing.assessment import assessment_metrics 
+from .decision_tree import DecisionTree
 
 
 class RandomForestClassifier:
@@ -69,7 +69,7 @@ def run_random_forest_pipeline(trainingdata: np.ndarray, testdata: np.ndarray,
     for n_trees in trees:
         acc_fold = []
 
-        for train_idx, val_idx in kf.split(X_train):
+        for train_idx, val_idx in kf.split(X_train,y_train):
             X_tr_fold, y_tr_fold = X_train[train_idx], y_train[train_idx]
             X_val_fold, y_val_fold = X_train[val_idx], y_train[val_idx]
 
@@ -102,8 +102,14 @@ def run_random_forest_pipeline(trainingdata: np.ndarray, testdata: np.ndarray,
     # Metrics based on different thresholds
     thresholds = np.linspace(1.0, 0.0, 101)
 
-    acc_train, sens_train, spec_train = assessment_metrics(y_train, score_train, thresholds)
-    acc_test, sens_test, spec_test = assessment_metrics(y_test, score_test, thresholds)
+    positiveclass = 1
+    negativeclass = 0
+
+    acc_train, sens_train, spec_train = assessment_metrics(score_train,y_train,positiveclass,
+                                                           negativeclass,thresholds)
+
+    acc_test, sens_test, spec_test = assessment_metrics(score_test,y_test,positiveclass,
+        negativeclass,thresholds)
 
     # Matrixes for metrics
     Accuracy= np.column_stack((acc_train, acc_test))

@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,14 +6,14 @@ from sklearn.model_selection import train_test_split
 from processing.classification.logistic_regression import binomial_logistic_regression as BLR
 from processing.classification import random_forest as RF
 
-#%% Data loading
+#Data loading
 df = pd.read_excel(
     "data/CA_normo.xlsx",
     sheet_name="sw1000",
     header=0
 )
 
-#%% feature and class separation
+#feature and class separation
 data = df.iloc[:, 2:-1].to_numpy(dtype=float)
 binary_class = df.iloc[:, -1].to_numpy(dtype=int)
 
@@ -65,7 +66,7 @@ print(f"Accuracy Test (the best threshold):  {Accuracy_LR[1][idx_opt_LR]:.3f}")
 print(f"Sensibility Test (the best threshold): {Sensibility_LR[1][idx_opt_LR]:.3f}")
 print(f"Specificity Test (the best threshold): {Specificity_LR[1][idx_opt_LR]:.3f}")
 
-#%% RANDOM FOREST
+# RANDOM FOREST
 # array of trees to find the optimal number
 trees = [10, 30, 50]
 
