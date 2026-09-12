@@ -14,7 +14,7 @@ def principal_component_analysis(data,required_variance,normalizzation):
         P =(data -mean)/ std
 
     else:
-
+        std = None
         P = data - mean 
 
     #Covariance matrix and his eigvalues and eigvectors

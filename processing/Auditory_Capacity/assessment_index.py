@@ -13,7 +13,7 @@ def bartlett_test_sphericity(data):
     which would indicate that the variables are unrelated and unsuitable for structure detection.
 
     Parameters:
-    data (numpy.ndarray): A 2D array where each column represents a group.
+    data (numpy.ndarray): A 2D array where each column represents a feature.
 
     Returns:
     float: The chi-square statistic.

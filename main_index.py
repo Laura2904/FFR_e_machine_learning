@@ -134,10 +134,10 @@ for class_i in classes:
 
 plt.figure(figsize=(10, 6))
 
-plt.boxplot(boxplot_data,label=boxplot_labels)
+plt.boxplot(boxplot_data,tick_labels=boxplot_labels)
 
-plt.xlabel("Classe e tipo indice")
-plt.ylabel("Valore indice")
+plt.xlabel("CLasses and indexes")
+plt.ylabel("Index values")
 plt.title("Boxplot of Auditory Capacity Indexes by Class")
 
 plt.grid(True, axis="y")
@@ -209,7 +209,7 @@ processing.Auditory_Capacity.assessment_index.plot_reliability(
     ACI1_test,
     corr_ACI1,
     "Tracking encoding",
-    "Robustezza ACI1"
+    "Reliability ACI1"
 )
 
 processing.Auditory_Capacity.assessment_index.plot_reliability(
@@ -217,13 +217,13 @@ processing.Auditory_Capacity.assessment_index.plot_reliability(
     ACI2_test,
     corr_ACI2,
     "Transitory encoding",
-    "Robustezza ACI2"
+    "Reliability ACI2"
 )
 
 processing.Auditory_Capacity.assessment_index.plot_reliability(
     GACI,
     GACI_test,
     corr_GACI,
-    "Indice globale",
-    "Robustezza indice globale"
+    "Global index",
+    "Reliability Global index"
 )
