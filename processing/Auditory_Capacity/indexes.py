@@ -48,6 +48,12 @@ def principal_component_analysis(data,required_variance,normalizzation):
     return data_new, index, eigenvectors,pc,variance_explained, weights, mean_error
 
 
+def normalize_index(x):
+        return 100 * (x - np.min(x)) / (
+            np.max(x) - np.min(x) + 1e-12
+        )
+
+
 def Auditory_Capacity_Index(data, required_variance=0.90):
     """
     Compute tracking, transitory and global auditory capacity indexes
@@ -60,13 +66,6 @@ def Auditory_Capacity_Index(data, required_variance=0.90):
         required_variance,
         normalization
     )
-
-
-    def normalize_index(x):
-        return 100 * (x - np.min(x)) / (
-            np.max(x) - np.min(x) + 1e-12
-        )
-
 
     # Tracking encoding capacity
     ACI_1 = scores[:, 0]

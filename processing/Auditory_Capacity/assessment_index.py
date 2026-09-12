@@ -1,8 +1,8 @@
+from matplotlib import pyplot as plt
 import numpy as np
 from scipy.stats import chi2
 from sklearn.model_selection import StratifiedKFold
-import indexes 
-from indexes import normalize_index
+from processing.Auditory_Capacity import indexes
 
 def bartlett_test_sphericity(data):
 
@@ -57,7 +57,7 @@ def reliability_test(ACI1,ACI2,GACI,data):
     cv = StratifiedKFold(n_splits=k_fold,shuffle=True,random_state=42)
     pc_k = np.zeros(k_fold)
 
-    features = data[:,2:-1]
+    features = data[:,:-1]
     labels = data[:, -1]
 
     # Arrays containing the test indexes for all subjects
@@ -83,18 +83,46 @@ def reliability_test(ACI1,ACI2,GACI,data):
     pc_mean = np.mean(pc_k)
     pc_std = np.std(pc_k, ddof=1)
 
-    ACI_p_1_test= normalize_index(ACI1_test)
-    ACI_p_2_test= normalize_index(ACI2_test)
-    GACI_p_test= normalize_index(GACI_test)
+    ACI_p_1_test= indexes.normalize_index(ACI1_test)
+    ACI_p_2_test= indexes.normalize_index(ACI2_test)
+    GACI_p_test= indexes.normalize_index(GACI_test)
 
     corr_ACI1 = np.corrcoef(ACI1, ACI_p_1_test)[0, 1]
     corr_ACI2 = np.corrcoef(ACI2, ACI_p_2_test)[0, 1]
     corr_GACI = np.corrcoef(GACI, GACI_p_test)[0, 1]
 
-    return pc_mean, pc_std, corr_ACI1, corr_ACI2, corr_GACI
+    return  pc_mean, pc_std, corr_ACI1, corr_ACI2, corr_GACI,ACI1_test,ACI2_test,GACI_test 
 
 
+def plot_reliability(index, index_test, correlation, xlabel, title):
+    
+    plt.figure(figsize=(7, 6))
 
+    plt.scatter(
+        index,
+        index_test,
+        s=40
+    )
+
+    plt.plot(
+        [0, 100],
+        [0, 100],
+        linewidth=2
+    )
+
+    plt.xlabel(xlabel)
+    plt.ylabel("Indice cross validation")
+
+    plt.xlim(0, 100)
+    plt.ylim(0, 100)
+
+    plt.title(
+        f"{title} (r = {correlation:.3f})"
+    )
+
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
 
 
 
