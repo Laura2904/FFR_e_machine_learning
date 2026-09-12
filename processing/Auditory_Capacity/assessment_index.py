@@ -70,10 +70,11 @@ def reliability_test(ACI1,ACI2,GACI,data):
         xtrain_fold, ytrain_fold = features[idxTrain], labels[idxTrain]
         xtest_fold, ytest_fold = features[idxTest], labels[idxTest]
 
-        _, index, eigenvectors,pc,_, weights,_ = indexes.principal_component_analysis(xtrain_fold,required_variance=0.90,
+        _, index, eigenvectors,pc,_, weights,_ ,mean_train,std_train= indexes.principal_component_analysis(xtrain_fold,required_variance=0.90,
             normalizzation=True)
-        
-        ACI = xtest_fold @ eigenvectors[:,:pc]
+
+        xtest_fold_std = (xtest_fold - mean_train) / std_train
+        ACI = xtest_fold_std @ eigenvectors[:,:pc]
         ACI1_test[idxTest] = ACI[:,0]
         ACI2_test[idxTest] = ACI[:,1]
         GACI_test[idxTest] = ACI @ weights

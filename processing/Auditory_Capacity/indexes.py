@@ -45,7 +45,7 @@ def principal_component_analysis(data,required_variance,normalizzation):
     else:
         data_new = X_std + mean
 
-    return data_new, index, eigenvectors,pc,variance_explained, weights, mean_error
+    return data_new, index, eigenvectors,pc,variance_explained, weights, mean_error, std, mean
 
 
 def normalize_index(x):
@@ -61,7 +61,7 @@ def Auditory_Capacity_Index(data, required_variance=0.90):
 
     normalization = True
 
-    _, scores, _, pc, _, weights, _ = principal_component_analysis(
+    _, scores, _, pc, _, weights, _ ,_,_= principal_component_analysis(
         data,
         required_variance,
         normalization
