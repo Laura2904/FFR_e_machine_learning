@@ -13,15 +13,21 @@ df = pd.read_excel(
     header=0
 )
 
-#feature and class separation
+# Convert binary categorical columns to 0/1
+for col in df.select_dtypes(include=['object', 'category']):
+    valori = df[col].dropna().unique()
+
+    if len(valori) == 2:
+        df[col] = df[col].map({
+            valori[0]: 0,
+            valori[1]: 1
+        })
+
+# Feature and class separation
 data = df.iloc[:, 2:-1].to_numpy(dtype=float)
 binary_class = df.iloc[:, -1].to_numpy(dtype=int)
 
-# stimulation encoding
-type_of_stimulation = df.iloc[:, 1]
-stimulation = (type_of_stimulation == "condensazione").astype(int)
-
-X = np.column_stack((stimulation, data))
+X = data
 y = binary_class
 
 # Train/Test Splitting

@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.model_selection import KFold, StratifiedKFold
-from processing.assessment import assessment_metrics as am
+from assessment import assessment_metrics as am
 
 def sigmoid(z):
     """computation of sigmoid function."""
