@@ -66,7 +66,6 @@ result = pd.DataFrame({
 print("\nResults:")
 print(result)
 
-
 # ============================================================
 # MEAN INDEX FOR EACH CLASS
 # ============================================================
@@ -196,7 +195,7 @@ plt.show()
 # RELIABILITY TEST 
 # ===========================================================
 data1 = np.column_stack((data, binary_class))
-pc_mean, pc_std, corr_ACI1, corr_ACI2, corr_GACI,ACI1_test,ACI2_test,GACI_test = processing.Auditory_Capacity.assessment_index.reliability_test(ACI1, ACI2, GACI,data1)
+pc_mean, pc_std, corr_ACI1, corr_ACI2, corr_GACI,ACI1_test,ACI2_test,GACI_test = processing.Auditory_Capacity.assessment_index.reliability_test(data1)
 
 print(f"\nReliability Test Results:")
 print(f"Mean number of principal components: {pc_mean:.2f} (Std: {pc_std:.2f})")
