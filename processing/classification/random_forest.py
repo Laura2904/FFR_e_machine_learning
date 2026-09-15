@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import KFold, StratifiedKFold
 from typing import List, Tuple, Optional
-from processing.assessment import assessment_metrics 
+from processing.classification.assessment import assessment_metrics 
 from .decision_tree import DecisionTree
 
 

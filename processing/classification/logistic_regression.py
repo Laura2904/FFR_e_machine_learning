@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.model_selection import KFold, StratifiedKFold
-from assessment import assessment_metrics as am
+from processing.classification.assessment import assessment_metrics as am
 
 def sigmoid(z):
     """computation of sigmoid function."""
@@ -78,16 +78,16 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
     test_feature = test_data[:, :-1]
 
     #Z-score
-    mean = np.mean(training_feature, axis=0)
-    std = np.std(training_feature, axis=0, ddof=1)
-    std[std == 0] = 1  # avoid division by zero
+    #mean = np.mean(training_feature, axis=0)
+    #std = np.std(training_feature, axis=0, ddof=1)
+    #std[std == 0] = 1  # avoid division by zero
 
-    training_feature = (training_feature - mean) / std
-    test_feature = (test_feature - mean) / std
+    #training_feature = (training_feature - mean) / std
+    #test_feature = (test_feature - mean) / std
 
     # Add intercept
-    xtrain = np.hstack((np.ones((training_feature.shape[0], 1)), training_feature))
-    xtest = np.hstack((np.ones((test_feature.shape[0], 1)), test_feature))
+    #xtrain = np.hstack((np.ones((training_feature.shape[0], 1)), training_feature))
+    #xtest = np.hstack((np.ones((test_feature.shape[0], 1)), test_feature))
 
     toll = 1e-3
     maxiter = 500
@@ -104,9 +104,23 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
         loss_beta = np.zeros(k_fold)
         accuracy_beta = np.zeros(k_fold)
 
-        for i, (idxTrain, idxTest) in enumerate(cv.split(xtrain, training_class)):
-            xtrain_fold, ytrain_fold = xtrain[idxTrain], training_class[idxTrain]
-            xtest_fold, ytest_fold = xtrain[idxTest], training_class[idxTest]
+        for i, (idxTrain, idxTest) in enumerate(cv.split(training_feature, training_class)):
+            xtrain_fold, ytrain_fold = training_feature[idxTrain], training_class[idxTrain]
+            xtest_fold, ytest_fold = training_feature[idxTest], training_class[idxTest]
+
+            #z_score
+            mean_fold = np.mean(xtrain_fold, axis=0) 
+            std_fold = np.std(xtrain_fold, axis=0, ddof=1) 
+
+            # Avoid division by zero for constant features 
+            std_fold[std_fold == 0] = 1
+
+            xtrain_fold = (xtrain_fold - mean_fold) / std_fold 
+            xtest_fold = (xtest_fold - mean_fold) / std_fold
+
+            #add intercept
+            xtrain_fold = np.hstack(( np.ones((xtrain_fold.shape[0], 1)), xtrain_fold ))
+            xtest_fold = np.hstack(( np.ones((xtest_fold.shape[0], 1)), xtest_fold ))
 
             beta_fold = Newton_Raphson(xtrain_fold, ytrain_fold, lam, maxiter, toll)
 
@@ -131,6 +145,18 @@ def binomial_logistic_regression(training_data, test_data, k_fold = 5):
     # Selection of the best lambda which minimizes the loss
     ind = np.argmin(mean_loss)
     lambda_opt = lambdas[ind]
+
+    # Final Z-score
+    mean = np.mean(training_feature, axis=0) 
+    std = np.std(training_feature, axis=0, ddof=1)
+    std[std == 0] = 1  # avoid division by zero
+
+    training_feature_z = (training_feature - mean) / std
+    test_feature_z = (test_feature - mean) / std
+
+    #add intercept
+    xtrain = np.hstack((np.ones((training_feature_z.shape[0], 1)), training_feature_z))
+    xtest = np.hstack((np.ones((test_feature_z.shape[0], 1)), test_feature_z))
 
     # final training the whole training set
     bestbeta = Newton_Raphson(xtrain, training_class, lambda_opt, maxiter, toll)
